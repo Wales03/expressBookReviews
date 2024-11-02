@@ -27,40 +27,59 @@ public_users.post("/register", (req,res) => {
         }
     }
     return res.status(404).json({message: "Unable to register user."});
-  return res.status(300).json({message: "Yet to be implemented"});
 });
 
 // Get the book list available in the shop
-public_users.get('/',function (req, res) {
- 
-  return res.status(300).json({books});
+public_users.get('/',async (req, res) => {
+        const allbooks = await new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve(books);
+              },4000)
+        });
+  return res.status(300).json({allbooks});
 });
 
 // Get book details based on ISBN
-public_users.get('/isbn/:isbn',function (req, res) {
+public_users.get('/isbn/:isbn',async function (req, res) {
     const isbn = req.params.isbn;
-    const book = books[isbn];
+    const book = await new Promise((resolve, reject) => {
+
+        setTimeout(() => {
+            resolve(books[isbn]);
+          },4000)
+    });
   return res.status(300).json({book});
  });
   
 // Get book details based on author
-public_users.get('/author/:author',function (req, res) {
+public_users.get('/author/:author',async function (req, res) {
   const author = req.params.author
-    const book = Object.values(books).filter((item,index)=>{
-        return item.author === author
-    })
+   
+    const book = await new Promise((resolve, reject) => {
+
+        setTimeout(() => {
+            resolve(Object.values(books).filter((item,index)=>{
+                return item.author === author
+            }));
+          },4000)
+    });
     
   return res.status(300).json({book});
 });
 
 // Get all books based on title
-public_users.get('/title/:title',function (req, res) {
+public_users.get('/title/:title',async function (req, res) {
     const title = req.params.title
-    console.log(Object.values(books))
     const array= Object.values(books)
-    const book = array.filter((item,index)=>{
-        return item.title === title
-    })
+    const book = await new Promise((resolve, reject) => {
+
+        setTimeout(() => {
+            resolve(array.filter((item,index)=>{
+                return item.title === title
+            }));
+          },4000)
+    });
+   
     
   return res.status(300).json({book});
 });
